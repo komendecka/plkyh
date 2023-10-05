@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<body>
+<h1>Generated</h1>
+
+<!--        {% for key in product1  %}-->
+<!--        <span>{{ key }}</span>-->
+<!--        {% endfor %}-->
+
+<!--        {% for key in amount1  %}-->
+<!--        <span>{{ key }}</span>-->
+<!--        {% endfor %}-->
+
+{% for key in palette_dict %}
+<span>{{ key }}</span>
+{% endfor %}
+
+{% for key,parent_dict_item in palette_dict.items() %}
+<span>{{ key }}</span>
+{% for key2, nested_value in parent_dict_item.items() %}
+<span>{{ key2 }}</span>
+{% endfor %}
+{% endfor %}`
+
+{% for palette in palette_dict %}
+  <li><a href = "{{ palette_dict[palette].pw  }}">{{ palette_dict[palette].ptw }}</a> </li>
+{% endfor %}
+
+{% for palette in palette_dict %}
+  <li><a href = "{{ palette_dict[palette].wns   }}">{{ palette_dict[palette].wbs  }}</a> </li>
+{% endfor %}
+
+<table>
+  <tr>
+    <th> items </th>
+    <th>wns</th>
+    <th>wbs</th>
+  </tr>
+{% for palette in palette_dict %}
+  <li><a href = "{{ palette_dict[palette].wns   }}">{{ palette_dict[palette].wbs  }}</a> </li>
+      <tr>
+    <td>{{ palette_dict[palette].items    }}</td>
+    <td>{{ palette_dict[palette].wns   }}</td>
+    <td>{{ palette_dict[palette].wbs   }}</td>
+  </tr>
+{% endfor %}
+</table>
+</body>
+</html>

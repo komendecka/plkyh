@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<body>
+
+
+<form action="/generate" method="POST">
+    {% for pl in range(2) %}
+    <h1>Paleta: {{ pl }}</h1>
+    {% for pr in range(2) %}
+    <span>Produkt: {{ pr }}</span>
+    <label for="product">Wybierz produkt:</label>
+    <select id="product" name="product[{{ pl }}][]">
+        <option value="">wybierz</option>
+        {% for key, value in products_weights.items() %}
+        <option value="{{ key }}">{{ key }}</option>
+        {% endfor %}
+    </select>
+    <label for="amount">Ilość:</label>
+    <input id="amount" name="amount[{{ pl }}][]">
+    {% endfor %}
+    <label for="palette_true_weight">Faktyczna waga palety:</label>
+    <input id="palette_true_weight" name="palette_true_weight[{{ pl }}]['palette_true_weight']">
+    {% endfor %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <button type="submit">generuj</button>
+</form>
+
+<button>dodaj produkt</button>
+<button>następna paleta</button>
+
+
+</body>
+</html>
