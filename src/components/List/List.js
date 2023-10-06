@@ -3,7 +3,6 @@ import Pallet from "../Pallet/Pallet";
 import shortid from 'shortid';
 import PalletForm from "../PalletForm/PalletForm";
 import {useState} from "react";
-import Column from "../Column/Column";
 
 
 const List = () => {
@@ -39,6 +38,17 @@ const List = () => {
         setPallets([...pallets, { id: shortid(), title: newPallet.title, items: [] }]);
     };
 
+    const addCard = (newCard, palletId) => {
+        const palletsUpdated = pallets.map(pallet => {
+            if(pallet.id === palletId)
+                return { ...pallet, items: [...pallet.items, { id: shortid(), title: newCard.title }]}
+            else
+                return pallet
+        })
+
+        setPallets(palletsUpdated);
+
+    };
 
 
     return (
@@ -48,8 +58,7 @@ const List = () => {
             </header>
             <p className={styles.description}>Please add first pallet plus products on it.</p>
             <section className={styles.columns}>
-                {pallets.map(pallet => <Pallet key={pallet.id} id={pallet.id} title={pallet.title} items={pallet.items} />)}
-             {/*{columns.map(column => <Column key={column.id} id={column.id} title={column.title} cards={column.cards} />)}*/}
+                {pallets.map(pallet => <Pallet addCard={addCard} key={pallet.id} id={pallet.id} title={pallet.title} items={pallet.items} />)}
             </section>
             <PalletForm action={addPallet} />
         </div>

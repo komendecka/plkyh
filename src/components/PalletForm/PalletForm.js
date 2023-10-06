@@ -4,6 +4,7 @@ import {useState} from "react";
 
 const PalletForm = props => {
     const [value, setValue] = useState('');
+
     const handleSubmit = e => {
         e.preventDefault();
         props.action({ title: value });
@@ -11,7 +12,7 @@ const PalletForm = props => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.columnForm}>
             <input type="text" value={value} onChange={e => setValue(e.target.value)} />
             <Button type='submit'>Add pallet</Button>
         </form>
