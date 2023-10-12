@@ -12,7 +12,7 @@ const Pallet = props => {
             <ul className={styles.pallets}>
                 {props.items.map(item => <Card key={item.id} title={item.title} />)}
             </ul>
-            <CardForm columnId={props.id} action={props.columnId} addCard={props.addCard} />
+            <CardForm columnId={props.id} action={props.columnId} addCard={props.addCard} pw={props.pw} />
         </article>
 
 
