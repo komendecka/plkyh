@@ -1,6 +1,6 @@
 import webbrowser
 from threading import Timer
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
@@ -33,11 +33,16 @@ products_weights = {'80.60.250': 10.77,
                     '93.01.300': 0.034,
                     '93.02.200': 0.036,
                     '21.42.01.1000': 14.300,
-                    '19.27.01.1000': 5.400}
+                    '19.27.01.1000': 5.400,
+                    }
 
 @app.route('/', methods=['GET'])
 def home():
-    return render_template('home.html', products_weights=products_weights)
+    return render_template('index.html', products_weights=products_weights)
+
+@app.route('/products_weights', methods=['GET', 'POST'])
+def api():
+    return jsonify(products_weights)
 
 
 @app.route('/generate', methods=['POST'])
