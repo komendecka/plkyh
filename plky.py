@@ -4,7 +4,7 @@ from flask import Flask, render_template, request
 
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
-import pdfkit
+# import pdfkit
 
 app = Flask(__name__)
 products_weights = {'80.60.250': 10.77,
@@ -97,21 +97,18 @@ def generate():
         palette_dict[key]['ms_percs'] = ms_percs
         palette_dict[key]['wns'] = wns
         palette_dict[key]['wbs'] = wbs
-    env = Environment(loader=FileSystemLoader('templates'))
-    template = env.get_template('generate.html')
-    html_out = template.render(palette_dict = palette_dict)
-    # html_out = template.render(product1=product1, amount1=amount1)
-    path_wkhtmltopdf = r'C:\wkhtmltopdf\bin\wkhtmltopdf.exe'
-    config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
-    file_content = pdfkit.from_string(
-        html_out,
-        False,
-        configuration=config,
-        # options='here_a_dict_with_special_page_properties',
-        # css='here_your_css_file_path'  # its a list e.g ['my_css.css', 'my_other_css.css']
-    )
-    with open('generate.pdf', 'wb+') as file:
-        file.write(file_content)
+    # env = Environment(loader=FileSystemLoader('templates'))
+    # template = env.get_template('generate.html')
+    # html_out = template.render(palette_dict = palette_dict)
+    # path_wkhtmltopdf = r'C:\wkhtmltopdf\bin\wkhtmltopdf.exe'
+    # config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
+    # file_content = pdfkit.from_string(
+    #     html_out,
+    #     False,
+    #     configuration=config,
+    # )
+    # with open('generate.pdf', 'wb+') as file:
+    #     file.write(file_content)
 
     return render_template('generate.html', palette_dict = palette_dict)
     # return render_template('generate.html', product1=product1, amount1=amount1)
