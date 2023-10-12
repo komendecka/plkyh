@@ -3,6 +3,7 @@ import Pallet from "../Pallet/Pallet";
 import shortid from 'shortid';
 import PalletForm from "../PalletForm/PalletForm";
 import {useState} from "react";
+import Button from "../Button/Button";
 
 
 const List = () => {
@@ -34,6 +35,19 @@ const List = () => {
         }
     ]);
 
+    const handleSubmit = e => {
+        e.preventDefault();
+        console.log(pallets);
+        fetch('/app', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(pallets),
+        });
+    };
+
+
     const addPallet = newPallet => {
         setPallets([...pallets, { id: shortid(), title: newPallet.title, items: [] }]);
     };
@@ -61,6 +75,10 @@ const List = () => {
                 {pallets.map(pallet => <Pallet addCard={addCard} key={pallet.id} id={pallet.id} title={pallet.title} items={pallet.items} />)}
             </section>
             <PalletForm action={addPallet} />
+            <form onSubmit={handleSubmit}>
+                <Button type="submit">Generate PackingList</Button>
+            </form>
+
         </div>
     );
 };
