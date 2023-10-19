@@ -9,33 +9,35 @@ import { useEffect } from "react";
 
 const List = () => {
 
+   // const [pallets, setPallets] = useState([]);
     const [pallets, setPallets] = useState([
         {
-            id: 1,
+            pid: 1,
             title: 1,
             items: [
-                { id: 1, title: '80.60.250', weight: '10.77'},
-                { id: 2, title: '15.62.1000', weight: '19.75'}
+                { id: 1, title: '80.60.250', amount: '10'},
+                { id: 2, title: '15.62.1000', amount: '19.75'}
             ]
         },
         {
-            id: 2,
+            pid: 2,
             title: 2,
             items: [
-                { id: 1, title: '80.60.250', weight: '10.77'},
-                { id: 2, title: '15.62.1000', weight: '19.75'}
+                { id: 1, title: '80.60.250', amount: '10.77'},
+                { id: 2, title: '15.62.1000', amount: '19.75'}
             ]
         },
         {
-            id: 3,
+            pid: 3,
             title: 3,
             items: [
-                { id: 1, title: '80.60.250', weight: '10.77'},
-                { id: 2, title: '15.62.1000', weight: '19.75'}
+                { id: 1, title: '80.60.250', amount: '10.77'},
+                { id: 2, title: '15.62.1000', amount: '19.75'}
             ]
         }
     ]);
 
+    // const [productsWeights, setProductWeights] = useState('');
     const [productsWeights, setProductWeights] = useState({
         "001.15.20": 0.4,
         "001.21.17.10": 1.1,
@@ -68,19 +70,19 @@ const List = () => {
 
     // useEffect(() => {
     //     fetch('/products_weights')
-    //       .then((response) => {
+    //     .then((response) => {
     //         return response.json();
-    //         console.log(response.json());
-    //       })
-    //       .then((data) => {
+    //     console.log(response.json());
+    //     })
+    //     .then((data) => {
     //         setProductWeights(data);
-    //       })
-    //       }, []);
+    //     })
+    // }, []);
 
     const handleSubmit = e => {
         e.preventDefault();
         console.log(pallets);
-        fetch('/app', {
+        fetch('/generate', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -91,13 +93,13 @@ const List = () => {
 
 
     const addPallet = newPallet => {
-        setPallets([...pallets, { id: shortid(), title: newPallet.title, items: [] }]);
+        setPallets([...pallets, { pid: shortid(), title: newPallet.title, items: [] }]);
     };
 
     const addCard = (newCard, palletId) => {
         const palletsUpdated = pallets.map(pallet => {
-            if(pallet.id === palletId)
-                return { ...pallet, items: [...pallet.items, { id: shortid(), title: newCard.title }]}
+            if(pallet.pid === palletId)
+                return { ...pallet, items: [...pallet.items, { id: shortid(), title: newCard.title, amount: newCard.amount }]}
             else
                 return pallet
         })
@@ -106,15 +108,38 @@ const List = () => {
 
     };
 
+    const handleDeletePallet = (pid) => {
+        const updatedPallets = pallets.filter((pallet) => pallet.pid !== pid);
+        setPallets(updatedPallets);
+    };
 
+    const handleDeleteCard = (palletId, cardId) => {
+        const updatedPallets = pallets.map(pallet => {
+            if (pallet.pid === palletId) {
+                const updatedItems = pallet.items.filter(item => item.id !== cardId);
+                return { ...pallet, items: updatedItems };
+            } else {
+                return pallet;
+            }
+        });
+        setPallets(updatedPallets);
+    };
     return (
-        <div className={styles.list}>
-            <header className={styles.header}>
-                <h2 className={styles.title}>Pallets to add<span>soon!</span></h2>
-            </header>
+        <div className={styles.lists}>
             <p className={styles.description}>Please add first pallet plus products on it.</p>
             <section className={styles.columns}>
-                {pallets.map(pallet => <Pallet addCard={addCard} key={pallet.id} id={pallet.id} title={pallet.title} items={pallet.items} pw={Object.keys(productsWeights)}/>)}
+                {pallets.map(pallet => (
+                    <Pallet
+                        addCard={addCard}
+                        onDeletePallet={handleDeletePallet}
+                        onDeleteCard={handleDeleteCard}  // Pass the function here
+                        key={pallet.pid}
+                        pid={pallet.pid}
+                        title={pallet.title}
+                        items={pallet.items}
+                        pw={Object.keys(productsWeights)}
+                    />
+                ))}
             </section>
             <PalletForm action={addPallet} />
             <form onSubmit={handleSubmit}>

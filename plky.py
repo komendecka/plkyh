@@ -1,6 +1,6 @@
 import webbrowser
 from threading import Timer
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
@@ -45,7 +45,7 @@ def api():
     return jsonify(products_weights)
 
 
-@app.route('/generate', methods=['POST'])
+@app.route('/generate', methods=['GET', 'POST'])
 def generate():
     data = request.data
     form = request.form
@@ -115,7 +115,8 @@ def generate():
     # with open('generate.pdf', 'wb+') as file:
     #     file.write(file_content)
 
-    return render_template('generate.html', palette_dict = palette_dict)
+    # return render_template('generate.html', palette_dict = palette_dict)
+    return redirect(url_for('generate', palette_dict=palette_dict))
     # return render_template('generate.html', product1=product1, amount1=amount1)
 
 

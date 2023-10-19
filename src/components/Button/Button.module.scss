@@ -35,3 +35,21 @@
     }
   }
 }
+
+.bin_btn {
+  background: $color-success;
+  border: 0;
+  color: $color-dark;
+  text-align: center;
+  line-height: 1.3;
+  padding: $base-size;
+  margin: 0 $base-size $base-size $base-size;
+  border-radius: $radius;
+  cursor: pointer;
+  font-weight: 700;
+
+
+  &:hover {
+    background: darken($color-success, 5%);
+  }
+}
