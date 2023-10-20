@@ -5,6 +5,7 @@ import PalletForm from "../PalletForm/PalletForm";
 import {useState} from "react";
 import Button from "../Button/Button";
 import { useEffect } from "react";
+import PackingList from "../PackingList/PackingList";
 
 
 const List = () => {
@@ -13,28 +14,45 @@ const List = () => {
     const [pallets, setPallets] = useState([
         {
             pid: 1,
-            title: 1,
+            title: 8,
             items: [
-                { id: 1, title: '80.60.250', amount: '10'},
-                { id: 2, title: '15.62.1000', amount: '19.75'}
-            ]
+                { id: 1, title: '80.62.250', amount: '80'},
+            ],
+            weight: 874,
         },
         {
             pid: 2,
-            title: 2,
+            title: 1,
             items: [
-                { id: 1, title: '80.60.250', amount: '10.77'},
-                { id: 2, title: '15.62.1000', amount: '19.75'}
-            ]
+                { id: 1, title: '15.62.1000', amount: '20'},
+                { id: 2, title: '30.06.100', amount: '300'}
+            ],
+            weight: 654,
+
         },
         {
             pid: 3,
+            title: 2,
+            items: [
+                { id: 1, title: '28.08.500', amount: '200'},
+                { id: 1, title: '28.06.500', amount: '300'},
+                { id: 1, title: '10.09.04.100', amount: '20'},
+                { id: 1, title: '10.19.03.100', amount: '20'},
+            ],
+            weight: 726,
+        },
+        {
+            pid: 4,
             title: 3,
             items: [
-                { id: 1, title: '80.60.250', amount: '10.77'},
-                { id: 2, title: '15.62.1000', amount: '19.75'}
-            ]
-        }
+                { id: 1, title: '01.30.500', amount: '100'},
+                { id: 1, title: '14.16.500', amount: '100'},
+                { id: 1, title: '86.91.100', amount: '30'},
+                { id: 1, title: '15.30.1000', amount: '30'},
+            ],
+            weight: 872,
+        },
+
     ]);
 
     // const [productsWeights, setProductWeights] = useState('');
@@ -65,7 +83,16 @@ const List = () => {
         "93.02.200": 0.036,
         "93.08.200": 0.03,
         "93.20.200": 0.033,
-        "93.21.300": 0.031
+        "93.21.300": 0.031,
+        '28.06.500': 1.06,
+        '10.09.04.100': 1.7,
+        '10.09.03.100': 1.7,
+        '01.30.500': 3.56,
+        '14.16.500': 1.92,
+        '86.91.100': 5.4,
+        '15.30.1000': 5.3,
+        '80.62.250': 10.77,
+
     });
 
     // useEffect(() => {
@@ -108,6 +135,19 @@ const List = () => {
 
     };
 
+    const addWeight = (newWeight, palletId) => {
+        const palletsUpdated = pallets.map(pallet => {
+            if (pallet.pid === palletId) {
+                const updatedWeight = newWeight;
+                return { ...pallet, weight: updatedWeight };
+            } else {
+                return pallet;
+            }
+        });
+        setPallets(palletsUpdated);
+    };
+
+
     const handleDeletePallet = (pid) => {
         const updatedPallets = pallets.filter((pallet) => pallet.pid !== pid);
         setPallets(updatedPallets);
@@ -131,12 +171,14 @@ const List = () => {
                 {pallets.map(pallet => (
                     <Pallet
                         addCard={addCard}
+                        addWeight={addWeight}
                         onDeletePallet={handleDeletePallet}
                         onDeleteCard={handleDeleteCard}  // Pass the function here
                         key={pallet.pid}
                         pid={pallet.pid}
                         title={pallet.title}
                         items={pallet.items}
+                        weight={pallet.weight}
                         pw={Object.keys(productsWeights)}
                     />
                 ))}
@@ -145,7 +187,9 @@ const List = () => {
             <form onSubmit={handleSubmit}>
                 <Button type="submit">Generate PackingList</Button>
             </form>
-
+            <div>
+                <PackingList pallets={pallets} productsWeights={productsWeights}/>
+            </div>
         </div>
     );
 };

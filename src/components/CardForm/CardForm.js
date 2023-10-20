@@ -10,7 +10,6 @@ const CardForm = props => {
     const handleSubmit = e => {
         e.preventDefault();
         props.addCard({ title: title, amount: amount}, props.palletId);
-        // setTitle('');
     };
 
     return (
